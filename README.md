@@ -33,6 +33,10 @@ This repository collects the addon source, core patches, blueprint conversion to
 - Chinese display names for local blueprints without non-ASCII paths in `ResourceLocation`.
 - `ground_blocks.json` selection for `structurize:blocksolidsubstitution`.
 
+### Creative placement
+
+The patched `BuildPackets` and `HeldBlueprints` add a creative-mode fallback: when the player has no usable build presence/site, the blueprint is printed directly instead of being silently dropped. `CurrentColony` is used as a fallback when the held book is not bound. Survival colony ordering is unchanged.
+
 ### Known issues
 
 - **Some packs contain blocks that already exist in the original Domum Ornamentum pack.** The converter preserves the original `block_state` and `textureData`, but a few blocks may not convert fully to Do materials and can fall back to vanilla blocks. Check the ghost preview before building.
@@ -88,6 +92,10 @@ MIT. See [LICENSE](LICENSE). Folkways-derived files retain upstream copyright; D
 - 分拣台注册为 Folkways 工作站，消耗整合资源产出实际建材。
 - 本地蓝图显示中文名称，同时保持 ASCII 文件名，不破坏 `ResourceLocation`。
 - `ground_blocks.json` 可按建筑包/单栋选择 `structurize:blocksolidsubstitution`。
+
+### 创造模式放置修复
+
+补丁后的 `BuildPackets` 与 `HeldBlueprints` 在创造模式下增加了直接打印回退：如果当前没有可用的 BuildPresence / 工地，蓝图不再被静默丢弃，而是直接打印。当前殖民地附件也会在手中的书未绑定时作为回退。生存模式的殖民地订单流程不变。
 
 ### 已知问题
 
