@@ -33,6 +33,10 @@ This repository collects the addon source, core patches, blueprint conversion to
 - Chinese display names for local blueprints without non-ASCII paths in `ResourceLocation`.
 - `ground_blocks.json` selection for `structurize:blocksolidsubstitution`.
 
+### Sorter variant priority
+
+`SorterWorkshop` previously stopped after eight output options. Because `materials_integration:log_sorting` contains dozens of log variants, later variants such as `stripped_dark_oak_log` were never offered to the planner. The workshop now prioritizes exact requested variants and considers up to 32 options; this was verified with completed `SorterWork` and `CutterWork` nodes.
+
 ### Known issues
 
 - **Some packs contain blocks that already exist in the original Domum Ornamentum pack.** The converter preserves the original `block_state` and `textureData`, but a few blocks may not convert fully to Do materials and can fall back to vanilla blocks. Check the ghost preview before building.
@@ -88,6 +92,10 @@ MIT. See [LICENSE](LICENSE). Folkways-derived files retain upstream copyright; D
 - 分拣台注册为 Folkways 工作站，消耗整合资源产出实际建材。
 - 本地蓝图显示中文名称，同时保持 ASCII 文件名，不破坏 `ResourceLocation`。
 - `ground_blocks.json` 可按建筑包/单栋选择 `structurize:blocksolidsubstitution`。
+
+### 分拣变体优先级修复
+
+`SorterWorkshop` 原来只返回 8 个输出选项；`materials_integration:log_sorting` 有几十种原木变体，`stripped_dark_oak_log` 排在后面时永远不会进入规划器。现在优先返回精确匹配的变体，并最多考虑 32 个选项；已通过实际完成的 `SorterWork` 和 `CutterWork` 验证。
 
 ### 已知问题
 
