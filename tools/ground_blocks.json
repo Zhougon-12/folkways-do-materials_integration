@@ -1,0 +1,14 @@
+{
+  "_comment": "Folkways 转换地面方块选择。修改后重新运行 convert_sword_blueprints.py 即可。default 是全局默认；packs 按键名覆盖；buildings 按 '包slug/建筑相对路径' 精确覆盖。",
+  "default": "minecraft:stone_bricks",
+  "packs": {
+    "high_elven": "minecraft:stone_bricks",
+    "roman": "minecraft:stone_bricks",
+    "age_of_colonies": "minecraft:stone_bricks",
+    "war_minecraft": "minecraft:stone_bricks",
+    "oak_treehouse": "minecraft:stone_bricks"
+  },
+  "buildings": {
+    "high_elven/education/university5": "minecraft:quartz_block"
+  }
+}

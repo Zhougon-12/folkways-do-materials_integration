@@ -1,0 +1,12 @@
+{
+  "folkways.page.ornamentum.joinery": "建筑师工坊",
+  "folkways.page.ornamentum.cutters": "切割机",
+  "folkways.page.ornamentum.empty": "还没有认领建筑师切割机",
+  "folkways.page.ornamentum.cutter.ready": "可以切割 Domum Ornamentum 方块",
+  "folkways.refusal.ornamentum.not_a_cutter": "切割机不见了",
+  "folkways.refusal.ornamentum.station_busy": "切割机正被别人使用",
+  "folkways.refusal.ornamentum.station_changed": "切割机状态已变化",
+  "folkways.refusal.ornamentum.recipe_changed": "配方已变化",
+  "folkways.refusal.ornamentum.nothing_to_work_with": "缺少可切割的材料",
+  "doings.folkways_ornamentum.cutting": "切割"
+}

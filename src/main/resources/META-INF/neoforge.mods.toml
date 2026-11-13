@@ -1,0 +1,51 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "folkways_ornamentum"
+version = "1.0.0"
+displayName = "Folkways × Domum Ornamentum"
+description = '''Domum Ornamentum 的原生 Folkways 接入：让带材质的 Do 方块完整走 Folkways 的原生蓝图 / 工地 / 幽灵 / 建造流程，并让建筑师切割机成为殖民地的原生工作站。'''
+
+[[dependencies.folkways_ornamentum]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.233,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.folkways_ornamentum]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.21.2)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.folkways_ornamentum]]
+modId = "folkways_core"
+type = "required"
+versionRange = "[0.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.folkways_ornamentum]]
+modId = "folkways_vanilla"
+type = "required"
+versionRange = "[0.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.folkways_ornamentum]]
+modId = "domum_ornamentum"
+type = "optional"
+versionRange = "[1.0.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.folkways_ornamentum]]
+modId = "materials_integration"
+type = "optional"
+versionRange = "[2.0,)"
+ordering = "AFTER"
+side = "BOTH"

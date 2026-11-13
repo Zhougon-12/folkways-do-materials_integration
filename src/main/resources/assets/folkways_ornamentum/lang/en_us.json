@@ -1,0 +1,12 @@
+{
+  "folkways.page.ornamentum.joinery": "Architect's Joinery",
+  "folkways.page.ornamentum.cutters": "Cutters",
+  "folkways.page.ornamentum.empty": "No architect's cutter claimed yet",
+  "folkways.page.ornamentum.cutter.ready": "Ready to cut Domum Ornamentum blocks",
+  "folkways.refusal.ornamentum.not_a_cutter": "The cutter is gone",
+  "folkways.refusal.ornamentum.station_busy": "The cutter is in use",
+  "folkways.refusal.ornamentum.station_changed": "The cutter has changed",
+  "folkways.refusal.ornamentum.recipe_changed": "The recipe has changed",
+  "folkways.refusal.ornamentum.nothing_to_work_with": "No material can be cut",
+  "doings.folkways_ornamentum.cutting": "cutting"
+}
