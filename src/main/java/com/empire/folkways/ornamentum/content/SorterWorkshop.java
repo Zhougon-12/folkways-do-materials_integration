@@ -39,7 +39,8 @@ public record SorterWorkshop(UUID key, UUID colony, ServerLevel level, WorldPos 
         if (!(intent instanceof Produce produce)) {
             return List.of();
         }
-        List<Change> options = new ArrayList<>();
+        List<Change> preferred = new ArrayList<>();
+        List<Change> fallback = new ArrayList<>();
         for (var holder : MaterialsIntegration.RESOURCE_ITEMS) {
             ItemStack input = new ItemStack(holder.get());
             if (!SortingWorkbenchRecipeManager.isSortableResource(input)) {
@@ -60,12 +61,18 @@ public record SorterWorkshop(UUID key, UUID colony, ServerLevel level, WorldPos 
                     continue;
                 }
                 SorterWork work = new SorterWork(this.colony, this.at, this.stances, input, output, (int) capacity);
-                options.add(Change.of(Grown.of(work)));
-                if (options.size() >= 8) {
-                    return List.copyOf(options);
+                Change change = Change.of(Grown.of(work));
+                // The log_sorting tag contains dozens of variants. Keep exact
+                // requested variants first so a stripped dark-oak request is not
+                // pushed out by the first eight oak/spruce entries.
+                if (Goods.matches(output, produce.wanted())) {
+                    preferred.add(change);
+                } else {
+                    fallback.add(change);
                 }
             }
         }
-        return List.copyOf(options);
+        preferred.addAll(fallback);
+        return List.copyOf(preferred.subList(0, Math.min(32, preferred.size())));
     }
 }
