@@ -4,6 +4,8 @@ Unofficial **Folkways × Domum Ornamentum × Materials Integration** compatibili
 
 This repository collects the addon source, core patches, blueprint conversion tools, Chinese localization and test evidence produced while integrating Sword & Kingdom building packs into [Folkways](https://github.com/IzakyL/folkways).
 
+> **下载：** [v1.0.0 Release](https://github.com/Zhougon-12/folkways-do-materials_integration/releases/tag/v1.0.0) · **展示页：** [https://zhougon-12.github.io/folkways-do-materials_integration/](https://zhougon-12.github.io/folkways-do-materials_integration/)
+
 > **Upstream credit**
 >
 > - [Folkways](https://github.com/IzakyL/folkways) — the colony mod this addon targets. The core-patch source under `core-patch/` is derived from Folkways nightly `86e1068`; its MIT license and copyright belong to IzakyL.
