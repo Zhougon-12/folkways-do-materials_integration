@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>folkways_ornamentum · Folkways × Do × Materials Integration</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1117;
+      --panel: #161b22;
+      --line: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --green: #3fb950;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 20% 0%, #1b2a41 0, var(--bg) 38rem);
+      color: var(--text);
+      font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header, main, footer { width: min(1100px, calc(100% - 40px)); margin: 0 auto; }
+    header { padding: 64px 0 28px; }
+    .eyebrow { color: var(--green); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: 12px; }
+    h1 { font-size: clamp(32px, 6vw, 64px); line-height: 1.08; margin: 14px 0 18px; }
+    h1 span { color: var(--accent); }
+    .lead { color: var(--muted); max-width: 860px; font-size: 19px; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+    .button {
+      display: inline-block; padding: 11px 18px; border: 1px solid var(--line);
+      border-radius: 8px; background: var(--panel); color: var(--text); font-weight: 650;
+    }
+    .button.primary { background: var(--green); border-color: var(--green); color: #07130a; }
+    .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; }
+    .badge { border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; color: var(--muted); font-size: 13px; }
+    section { padding: 38px 0; border-top: 1px solid var(--line); }
+    h2 { font-size: 26px; margin: 0 0 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+    .card h3 { margin: 0 0 8px; font-size: 17px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-top: 20px; }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+    .metric b { display: block; color: var(--green); font-size: 28px; line-height: 1.2; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    figure { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+    figure img { width: 100%; display: block; }
+    figcaption { padding: 10px 14px; color: var(--muted); font-size: 13px; }
+    pre { background: #010409; border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow: auto; }
+    code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 14px; }
+    .note { border-left: 3px solid #d29922; background: #1f1a0d; padding: 12px 16px; border-radius: 0 8px 8px 0; color: #e3b341; }
+    footer { padding: 38px 0 64px; color: var(--muted); font-size: 14px; }
+    ul { padding-left: 22px; }
+    li { margin: 6px 0; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Minecraft 1.21.1 · NeoForge · Folkways addon</div>
+  <h1>folkways_<span>ornamentum</span></h1>
+  <p class="lead">
+    把剑与王国的建筑包转换成 Folkways 原生结构，精确保留 Domum Ornamentum 的材质变体，
+    并接入 Materials Integration 的资源分拣与 Do 方块资源掉落。
+  </p>
+  <div class="actions">
+    <a class="button primary" href="https://github.com/Zhougon-12/folkways-do-materials_integration/releases/tag/v1.0.0">下载 v1.0.0 发布包</a>
+    <a class="button" href="https://github.com/Zhougon-12/folkways-do-materials_integration">GitHub 源码</a>
+    <a class="button" href="https://github.com/IzakyL/folkways">Folkways 上游</a>
+  </div>
+  <div class="badges">
+    <span class="badge">24 个建筑包</span>
+    <span class="badge">7368 个蓝图</span>
+    <span class="badge">MIT</span>
+    <span class="badge">非官方兼容项目</span>
+  </div>
+</header>
+
+<main>
+  <section>
+    <h2>已实现</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Do 材质精确预览</h3>
+        <p>预览世界从蓝图方块实体读取 textureData，Do 不再显示为缺失材质。</p>
+      </div>
+      <div class="card">
+        <h3>原生建造链路</h3>
+        <p>Blueprint → 订单 → 工地 → 逐块放置，建筑工完整使用 Folkways 工作流。</p>
+      </div>
+      <div class="card">
+        <h3>Materials Integration</h3>
+        <p>Do 方块按主材质掉落整合资源；分拣台作为殖民地工作站产出实际建材。</p>
+      </div>
+      <div class="card">
+        <h3>大蓝图不 OOM</h3>
+        <p>本地蓝图惰性加载，启动时只索引路径；7368 个蓝图可一次安装。</p>
+      </div>
+      <div class="card">
+        <h3>中文名称</h3>
+        <p>ASCII 文件名保持不变，界面通过名称表显示中文；不破坏 ResourceLocation。</p>
+      </div>
+      <div class="card">
+        <h3>地面方块可选</h3>
+        <p>blocksolidsubstitution 通过 ground_blocks.json 按包/单栋选择，不再随机。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>实机验证</h2>
+    <div class="metrics">
+      <div class="metric"><b>7368</b><span>本地蓝图全部读取/解析，missing=0 invalid=0</span></div>
+      <div class="metric"><b>78/78</b><span>3vines 建筑逐块验证，verifyMismatch=0</span></div>
+      <div class="metric"><b>173/173</b><span>Do 精确方块比较通过</span></div>
+      <div class="metric"><b>0</b><span>全部安装启动 OOM</span></div>
+    </div>
+    <div class="shots" style="margin-top:20px">
+      <figure>
+        <img src="../evidence/converted-3vines-ghost-2026-11-13.png" alt="蓝图幽灵预览">
+        <figcaption>选中转换后的蓝图，幽灵预览正常，“在此放下 3藤蔓”。</figcaption>
+      </figure>
+      <figure>
+        <img src="../evidence/converted-3vines-build-2026-11-13.png" alt="工地施工">
+        <figcaption>原生下单后的工地，材料与逐块放置链路通过。</figcaption>
+      </figure>
+      <figure>
+        <img src="../evidence/converted-3vines-upload-build-2026-11-13.png" alt="上传放置">
+        <figcaption>蓝图上传到服务端后成功生成第二个工地。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>安装</h2>
+    <p>从 <a href="https://github.com/Zhougon-12/folkways-do-materials_integration/releases/tag/v1.0.0">v1.0.0 Release</a> 下载分享包，解压后：</p>
+    <pre><code>mods/folkways_ornamentum-1.0.0.jar
+mods/folkways-vanilla-neoforge-1.21.1-*.jar   ← 必须使用分享包内的补丁核心
+mods/materials_integration-2.8.jar
+
+folkways/blueprint/&lt;pack&gt;/                 ← 转换后的建筑包
+config/folkways_ornamentum/blueprint_names_zh_cn.json</code></pre>
+    <p class="note">旧版 folkways-vanilla 核心没有惰性加载、64 MB 读取上限和上传名称修复；只替换附属 jar 仍然会出错。</p>
+  </section>
+
+  <section>
+    <h2>来源与致谢</h2>
+    <ul>
+      <li><a href="https://github.com/IzakyL/folkways">IzakyL / Folkways</a>：Colony 框架与原生工作流，MIT。</li>
+      <li><a href="https://github.com/ldtteam/Domum-Ornamentum">Domum Ornamentum</a>：材质化建筑方块。</li>
+      <li>Materials Integration / 22angle：资源统合与分拣台。</li>
+      <li>剑与王国建筑包作者、汉化作者：建筑蓝图和语言来源。</li>
+    </ul>
+    <p>本项目是非官方兼容工作，不是 Folkways 的官方分支。</p>
+  </section>
+</main>
+
+<footer>
+  folkways_ornamentum · 2026 · <a href="https://github.com/Zhougon-12/folkways-do-materials_integration">GitHub</a>
+</footer>
+</body>
+</html>
