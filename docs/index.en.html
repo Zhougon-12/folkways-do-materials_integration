@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>folkways_ornamentum · Folkways × Do × Materials Integration</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1117;
+      --panel: #161b22;
+      --line: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --green: #3fb950;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 20% 0%, #1b2a41 0, var(--bg) 38rem);
+      color: var(--text);
+      font: 16px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header, main, footer { width: min(1100px, calc(100% - 40px)); margin: 0 auto; }
+    header { padding: 64px 0 28px; }
+    .lang { text-align: right; color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+    .lang .active { color: var(--text); font-weight: 700; }
+    .eyebrow { color: var(--green); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: 12px; }
+    h1 { font-size: clamp(32px, 6vw, 64px); line-height: 1.08; margin: 14px 0 18px; }
+    h1 span { color: var(--accent); }
+    .lead { color: var(--muted); max-width: 860px; font-size: 19px; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+    .button {
+      display: inline-block; padding: 11px 18px; border: 1px solid var(--line);
+      border-radius: 8px; background: var(--panel); color: var(--text); font-weight: 650;
+    }
+    .button.primary { background: var(--green); border-color: var(--green); color: #07130a; }
+    .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; }
+    .badge { border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; color: var(--muted); font-size: 13px; }
+    section { padding: 38px 0; border-top: 1px solid var(--line); }
+    h2 { font-size: 26px; margin: 0 0 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+    .card h3 { margin: 0 0 8px; font-size: 17px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-top: 20px; }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+    .metric b { display: block; color: var(--green); font-size: 28px; line-height: 1.2; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    figure { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+    figure img { width: 100%; display: block; }
+    figcaption { padding: 10px 14px; color: var(--muted); font-size: 13px; }
+    pre { background: #010409; border: 1px solid var(--line); border-radius: 8px; padding: 16px; overflow: auto; }
+    code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 14px; }
+    .note { border-left: 3px solid #d29922; background: #1f1a0d; padding: 12px 16px; border-radius: 0 8px 8px 0; color: #e3b341; }
+    footer { padding: 38px 0 64px; color: var(--muted); font-size: 14px; }
+    ul { padding-left: 22px; }
+    li { margin: 6px 0; }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="lang"><a href="index.html">中文</a> · <a class="active" href="index.en.html">English</a></nav>
+  <div class="eyebrow">Minecraft 1.21.1 · NeoForge · Folkways addon</div>
+  <h1>folkways_<span>ornamentum</span></h1>
+  <p class="lead">
+    Converts Sword &amp; Kingdom building packs into native Folkways structures while preserving
+    Domum Ornamentum material variants, then connects Materials Integration sorting and Do block drops.
+  </p>
+  <div class="actions">
+    <a class="button primary" href="https://github.com/Zhougon-12/folkways-do-materials_integration/releases/tag/v1.0.0">Download v1.0.0 release</a>
+    <a class="button" href="https://github.com/Zhougon-12/folkways-do-materials_integration">GitHub source</a>
+    <a class="button" href="https://github.com/IzakyL/folkways">Folkways upstream</a>
+  </div>
+  <div class="badges">
+    <span class="badge">24 building packs</span>
+    <span class="badge">7368 blueprints</span>
+    <span class="badge">MIT</span>
+    <span class="badge">Unofficial compatibility project</span>
+  </div>
+</header>
+
+<main>
+  <section>
+    <h2>What works</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Exact Do preview</h3>
+        <p>The preview world reads textureData from blueprint block entities, so Do blocks no longer show missing materials.</p>
+      </div>
+      <div class="card">
+        <h3>Native build chain</h3>
+        <p>Blueprint → build order → site → block-by-block placement, using the normal Folkways worker flow.</p>
+      </div>
+      <div class="card">
+        <h3>Materials Integration</h3>
+        <p>Do blocks drop integration resources by primary material; the sorting workbench turns them into real building materials.</p>
+      </div>
+      <div class="card">
+        <h3>No OOM on large packs</h3>
+        <p>Local blueprints are indexed lazily at startup; 7368 blueprints can be installed together.</p>
+      </div>
+      <div class="card">
+        <h3>Chinese names</h3>
+        <p>ASCII file names stay unchanged; the UI shows Chinese through a name map without breaking ResourceLocation.</p>
+      </div>
+      <div class="card">
+        <h3>Selectable ground</h3>
+        <p>blocksolidsubstitution is selected per pack/building through ground_blocks.json instead of being random.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>In-game verification</h2>
+    <div class="metrics">
+      <div class="metric"><b>7368</b><span>local blueprints read/parsed, missing=0 invalid=0</span></div>
+      <div class="metric"><b>78/78</b><span>3vines block-by-block verification, verifyMismatch=0</span></div>
+      <div class="metric"><b>173/173</b><span>exact Do block comparisons passed</span></div>
+      <div class="metric"><b>0</b><span>OOM with the full installation</span></div>
+    </div>
+    <div class="shots" style="margin-top:20px">
+      <figure>
+        <img src="evidence/supply-camp-place-preview-2026-11-13.jpg" alt="Small knight camp placement preview">
+        <figcaption>Placing “Small Knight Camp 3” on open ground; the blue bounds and Do material preview render correctly.</figcaption>
+      </figure>
+      <figure>
+        <img src="evidence/supply-camp-ghost-preview-2026-11-13.jpg" alt="Supply camp ghost preview">
+        <figcaption>The ghost preview shows the complete roof, timber and Do materials, but the supply-camp bug can still block ordering.</figcaption>
+      </figure>
+      <figure>
+        <img src="evidence/blueprint-picker-supply-camp-2026-11-13.jpg" alt="Blueprint picker">
+        <figcaption>“Supply Camp” in the blueprint picker: 619 blocks, from a Sword &amp; Kingdom pack.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>Known issues</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Do original blocks can cause incomplete conversion</h3>
+        <p>Some Sword &amp; Kingdom packs contain blocks that already exist in the original Domum Ornamentum pack. The converter keeps the original block_state and textureData where possible, but a few blocks may not convert fully to Do materials and can fall back to vanilla blocks. Check the ghost preview before placing.</p>
+      </div>
+      <div class="card">
+        <h3>Supply buildings still have an unknown bug</h3>
+        <p>“Supply Camp” and related supply buildings still have an unresolved issue that can affect normal gameplay: a blueprint may preview correctly but fail to create an order, or the site may not continue. Back up important saves and do not use it as a core building yet.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Installation</h2>
+    <p>Download the share package from the <a href="https://github.com/Zhougon-12/folkways-do-materials_integration/releases/tag/v1.0.0">v1.0.0 release</a>, then extract:</p>
+    <pre><code>mods/folkways_ornamentum-1.0.0.jar
+mods/folkways-vanilla-neoforge-1.21.1-*.jar   ← patched core, required
+mods/materials_integration-2.8.jar
+
+folkways/blueprint/&lt;pack&gt;/                 ← converted packs
+config/folkways_ornamentum/blueprint_names_zh_cn.json</code></pre>
+    <p class="note">The stock folkways-vanilla core lacks lazy loading, the 64 MB read limit and the upload-name fix. Replacing only the addon jar will still fail.</p>
+  </section>
+
+  <section>
+    <h2>Credits</h2>
+    <ul>
+      <li><a href="https://github.com/IzakyL/folkways">IzakyL / Folkways</a>: colony framework and native workflow, MIT.</li>
+      <li><a href="https://github.com/ldtteam/Domum-Ornamentum">Domum Ornamentum</a>: material-textured building blocks.</li>
+      <li>Materials Integration / 22angle: resource unification and sorting workbench.</li>
+      <li>Sword &amp; Kingdom pack authors and translators: blueprint and language sources.</li>
+    </ul>
+    <p>This is an unofficial compatibility project, not an official Folkways fork.</p>
+  </section>
+</main>
+
+<footer>
+  folkways_ornamentum · 2026 · <a href="https://github.com/Zhougon-12/folkways-do-materials_integration">GitHub</a>
+</footer>
+</body>
+</html>
