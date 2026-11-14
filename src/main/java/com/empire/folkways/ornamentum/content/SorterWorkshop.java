@@ -47,7 +47,7 @@ public record SorterWorkshop(UUID key, UUID colony, ServerLevel level, WorldPos 
                 continue;
             }
             for (ItemStack output : SortingWorkbenchRecipeManager.getRecipesFor(input)) {
-                if (output.isEmpty() || !Goods.overlap(produce.wanted(), Goods.specOf(output))) {
+                if (output.isEmpty() || !Goods.matches(output, produce.wanted())) {
                     continue;
                 }
                 long capacity = produce.runs(
