@@ -143,10 +143,11 @@ public final class CutterWork implements Node {
             if (!holder.value().matches(recipeInput, level)) {
                 return Outcome.failed(OrnamentumRefusal.NOTHING_TO_WORK_WITH);
             }
-            ItemStack out = holder.value().assemble(recipeInput, level.registryAccess());
-            if (out.isEmpty() || !Goods.matches(out, Goods.specOf(this.plan.preview()))) {
+            ItemStack assembled = holder.value().assemble(recipeInput, level.registryAccess());
+            if (assembled.isEmpty()) {
                 return Outcome.failed(OrnamentumRefusal.RECIPE_CHANGED);
             }
+            ItemStack out = this.plan.preview().copyWithCount(assembled.getCount());
             made.add(out);
         }
 
