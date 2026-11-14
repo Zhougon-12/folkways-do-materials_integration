@@ -44,8 +44,18 @@ public final class CutterPlans {
     /** 只返回能精确满足 {@code wanted} 的方案；plain 需求接受任意材质/变体。 */
     public static List<Plan> plansFor(ServerLevel level, ItemSpec wanted) {
         ItemStack target = Goods.display(wanted);
+        boolean trace = System.getProperty("folkways_ornamentum.debug") != null
+                && wanted.toString().contains("slab");
         if (target.isEmpty() || !(target.getItem() instanceof BlockItem targetItem)) {
+            if (trace) {
+                com.empire.folkways.ornamentum.FolkwaysOrnamentum.LOG.info(
+                        "[CUTPLAN] no target wanted={} display={}", wanted, target);
+            }
             return List.of();
+        }
+        if (trace) {
+            com.empire.folkways.ornamentum.FolkwaysOrnamentum.LOG.info(
+                    "[CUTPLAN] target wanted={} stack={} block={}", wanted, target, targetItem.getBlock());
         }
         Map<ResourceLocation, Block> wantedTexture =
                 MaterialTextureData.readFromItemStack(target).getTexturedComponents();
@@ -55,9 +65,18 @@ public final class CutterPlans {
             ArchitectsCutterRecipe recipe = holder.value();
             Block block = recipe.getBlock();
             if (!(block instanceof IMateriallyTexturedBlock textured)) {
+                if (trace) {
+                    com.empire.folkways.ornamentum.FolkwaysOrnamentum.LOG.info(
+                            "[CUTPLAN] not textured recipe={} block={}", holder.id(), block);
+                }
                 continue;
             }
             if (targetItem.getBlock() != block) {
+                if (trace) {
+                    com.empire.folkways.ornamentum.FolkwaysOrnamentum.LOG.info(
+                            "[CUTPLAN] block mismatch recipe={} block={} target={}",
+                            holder.id(), block, targetItem.getBlock());
+                }
                 continue;
             }
 
@@ -76,6 +95,11 @@ public final class CutterPlans {
                 chosen.add(material);
             }
             if (!viable) {
+                if (trace) {
+                    com.empire.folkways.ornamentum.FolkwaysOrnamentum.LOG.info(
+                            "[CUTPLAN] not viable recipe={} components={} texture={}",
+                            holder.id(), components, wantedTexture);
+                }
                 continue;
             }
 
@@ -85,14 +109,30 @@ public final class CutterPlans {
             }
             ArchitectsCutterRecipeInput recipeInput = new ArchitectsCutterRecipeInput(input);
             if (!recipe.matches(recipeInput, level)) {
+                if (trace) {
+                    com.empire.folkways.ornamentum.FolkwaysOrnamentum.LOG.info(
+                            "[CUTPLAN] recipe no match recipe={} chosen={}", holder.id(), chosen);
+                }
                 continue;
             }
-            ItemStack preview = recipe.assemble(recipeInput, level.registryAccess());
-            if (preview.isEmpty() || !Goods.matches(preview, wanted)) {
+            ItemStack assembled = recipe.assemble(recipeInput, level.registryAccess());
+            if (assembled.isEmpty()) {
+                if (trace) {
+                    com.empire.folkways.ornamentum.FolkwaysOrnamentum.LOG.info(
+                            "[CUTPLAN] empty output recipe={}", holder.id());
+                }
                 continue;
             }
+            // The cutter recipe is a validation gate; its output may omit the
+            // domum_ornamentum:texture_data and block_state components that make
+            // a Do item exact. Keep the wanted stack as the real output.
+            ItemStack exact = target.copyWithCount(Math.max(1, assembled.getCount()));
             plans.add(new Plan(holder.id(), block, components, List.copyOf(chosen),
-                    preview, Math.max(1, preview.getCount())));
+                    exact, exact.getCount()));
+        }
+        if (trace) {
+            com.empire.folkways.ornamentum.FolkwaysOrnamentum.LOG.info(
+                    "[CUTPLAN] result wanted={} plans={}", wanted, plans.size());
         }
         return List.copyOf(plans);
     }
