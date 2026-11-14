@@ -144,8 +144,12 @@ public final class OrnamentumPresence implements Facing, Claim.Watch {
                 UUID key = UUID.nameUUIDFromBytes(
                         ("folkways_ornamentum:sorter/" + this.colony.id() + "/" + at)
                                 .getBytes(StandardCharsets.UTF_8));
+                Optional<Stances> sorterStances = SorterStances.of(level, at);
+                if (sorterStances.isEmpty()) {
+                    continue;
+                }
                 workshops.add(new SorterWorkshop(key, this.colony.id(), level, at,
-                        io.github.izakyl.folkways.core.work.api.Stances.at(level, cell)));
+                        sorterStances.get()));
             }
 
             this.colony.publish(OrnamentumContent.ID, level.dimension(), workshops);
