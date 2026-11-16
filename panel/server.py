@@ -83,6 +83,36 @@ def count_nbt(source: Path) -> int:
     return sum(1 for path in source.rglob("*.nbt") if path.is_file())
 
 
+def directory_payload(raw: str) -> dict:
+    text = (raw or "").strip()
+    path = Path(text).expanduser() if text else Path.home()
+    try:
+        path = path.resolve()
+    except Exception:
+        path = path.absolute()
+    if path.is_file():
+        path = path.parent
+    if not path.is_dir():
+        return {"ok": False, "error": f"目录不存在：{path}"}
+    children = []
+    try:
+        for entry in path.iterdir():
+            try:
+                if entry.is_dir() and not entry.name.startswith("."):
+                    children.append({"name": entry.name, "path": str(entry)})
+            except OSError:
+                continue
+    except OSError as error:
+        return {"ok": False, "error": f"无法读取目录：{error}"}
+    children.sort(key=lambda item: item["name"].casefold())
+    return {
+        "ok": True,
+        "path": str(path),
+        "parent": str(path.parent) if path.parent != path else "",
+        "dirs": children,
+    }
+
+
 def scan_payload(source_raw: str) -> dict:
     source = Path(source_raw).expanduser()
     if not source.exists():
@@ -234,18 +264,8 @@ class Handler(BaseHTTPRequestHandler):
             )
             self.send_json({"ok": ok, "message": message})
             return
-        if path == "/api/pick":
-            kind = body.get("kind", "source")
-            try:
-                import tkinter as tk
-                from tkinter import filedialog
-                root = tk.Tk()
-                root.withdraw()
-                selected = filedialog.askdirectory(title="选择蓝图目录" if kind == "source" else "选择输出目录")
-                root.destroy()
-                self.send_json({"ok": bool(selected), "path": selected})
-            except Exception as error:  # noqa: BLE001
-                self.send_json({"ok": False, "error": str(error)})
+        if path == "/api/dirs":
+            self.send_json(directory_payload(str(body.get("path", ""))))
             return
         if path == "/api/open":
             target = Path(str(body.get("output", "")))
