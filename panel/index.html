@@ -131,6 +131,9 @@ main{padding:28px 30px 34px;min-width:0}
 .modal-close{border:0;background:transparent;color:#8fa2b3;font-size:22px;line-height:1;cursor:pointer}
 .browser-path{display:flex;gap:8px;align-items:center;padding:11px 16px;border-bottom:1px solid #1d2a39;color:#aebdca;font-size:12px;word-break:break-all}
 .browser-path code{color:var(--gold);font-family:Consolas,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.browser-roots{display:flex;flex-wrap:wrap;gap:6px;padding:9px 16px;border-bottom:1px solid #1d2a39}
+.browser-root{border:1px solid #2b3c4f;background:#101d29;color:#c5d2dd;border-radius:8px;padding:5px 10px;font:inherit;font-size:11px;cursor:pointer}
+.browser-root:hover,.browser-root.active{border-color:var(--gold);color:var(--gold)}
 .browser-list{overflow:auto;padding:8px;flex:1;min-height:250px}
 .browser-row{display:flex;align-items:center;gap:10px;width:100%;padding:10px 11px;border:0;border-radius:9px;background:transparent;color:#d7e2ec;text-align:left;font:inherit;font-size:12.5px;cursor:pointer}
 .browser-row:hover{background:#172535;color:var(--gold)}
@@ -240,6 +243,7 @@ main{padding:28px 30px 34px;min-width:0}
       <button class="modal-close" id="browserClose" title="关闭">×</button>
     </div>
     <div class="browser-path"><span>当前：</span><code id="browserPath">—</code></div>
+    <div class="browser-roots" id="browserRoots"></div>
     <div class="browser-list" id="browserList"></div>
     <div class="modal-actions">
       <button class="btn btn-ghost" id="browserUp">上一级</button>
@@ -362,6 +366,17 @@ async function loadDirs(path){
   }
   browserCurrent = res.path;
   $('browserPath').textContent = res.path;
+  const roots = $('browserRoots');
+  roots.innerHTML = '';
+  for (const item of (res.roots || [])){
+    const button = document.createElement('button');
+    button.className = 'browser-root';
+    button.textContent = item.name;
+    button.title = item.path;
+    if (res.path.toUpperCase().startsWith(item.path.toUpperCase().slice(0, 2))) button.classList.add('active');
+    button.addEventListener('click', () => loadDirs(item.path));
+    roots.appendChild(button);
+  }
   const list = $('browserList');
   list.innerHTML = '';
   if (!res.dirs.length){
