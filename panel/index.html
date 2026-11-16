@@ -123,6 +123,20 @@ main{padding:28px 30px 34px;min-width:0}
 .foot code{color:#aebdca}
 .notice{display:none;margin:0 0 14px;padding:10px 13px;border-radius:11px;border:1px solid rgba(255,123,123,.32);background:rgba(255,123,123,.08);color:#ffb3b3;font-size:12px}
 .notice.show{display:block}
+.modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(3,7,12,.72);backdrop-filter:blur(5px)}
+.modal.show{display:flex}
+.modal-card{width:min(780px,96vw);max-height:80vh;display:flex;flex-direction:column;border:1px solid #314255;border-radius:16px;background:#0d1721;box-shadow:0 30px 80px rgba(0,0,0,.6);overflow:hidden}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid #223244}
+.modal-head h3{margin:0;font-size:13px;letter-spacing:.08em;color:#dbe6ef}
+.modal-close{border:0;background:transparent;color:#8fa2b3;font-size:22px;line-height:1;cursor:pointer}
+.browser-path{display:flex;gap:8px;align-items:center;padding:11px 16px;border-bottom:1px solid #1d2a39;color:#aebdca;font-size:12px;word-break:break-all}
+.browser-path code{color:var(--gold);font-family:Consolas,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.browser-list{overflow:auto;padding:8px;flex:1;min-height:250px}
+.browser-row{display:flex;align-items:center;gap:10px;width:100%;padding:10px 11px;border:0;border-radius:9px;background:transparent;color:#d7e2ec;text-align:left;font:inherit;font-size:12.5px;cursor:pointer}
+.browser-row:hover{background:#172535;color:var(--gold)}
+.browser-row .folder{width:22px;color:var(--gold);font-size:16px}
+.browser-empty{padding:28px;text-align:center;color:#657889;font-size:12px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px;border-top:1px solid #223244;background:#0b141e}
 @media(max-width:1000px){
   .app{grid-template-columns:1fr}
   aside{border-right:0;border-bottom:1px solid rgba(255,255,255,.07)}
@@ -217,6 +231,22 @@ main{padding:28px 30px 34px;min-width:0}
 
     <div class="foot"><span>转换器：<code>folkways-ornamentum/tools/convert_blueprints.py</code></span><span>输出清单：<code>conversion_manifest.json</code></span></div>
   </main>
+</div>
+
+<div class="modal" id="browserModal">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-label="选择目录">
+    <div class="modal-head">
+      <h3>SELECT FOLDER · 选择目录</h3>
+      <button class="modal-close" id="browserClose" title="关闭">×</button>
+    </div>
+    <div class="browser-path"><span>当前：</span><code id="browserPath">—</code></div>
+    <div class="browser-list" id="browserList"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="browserUp">上一级</button>
+      <button class="btn btn-ghost" id="browserCancel">取消</button>
+      <button class="btn btn-primary" id="browserChoose">选择此目录</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -315,19 +345,65 @@ async function poll(){
     if (pollTimer){ clearInterval(pollTimer); pollTimer = null; }
   }
 }
-async function pick(kind){
-  const res = await api('/api/pick', {kind});
-  if (res.ok && res.path) $(kind === 'source' ? 'source' : 'output').value = res.path;
-  else if (!res.ok && res.error) showNotice('无法打开选择器：' + res.error);
+let browserKind = 'source';
+let browserCurrent = '';
+async function openBrowser(kind){
+  browserKind = kind;
+  $('browserModal').classList.add('show');
+  await loadDirs($(kind === 'source' ? 'source' : 'output').value.trim());
 }
+async function loadDirs(path){
+  const res = await api('/api/dirs', {path});
+  if (!res.ok){
+    if (res.error) showNotice(res.error);
+    $('browserPath').textContent = '—';
+    $('browserList').innerHTML = `<div class="browser-empty">${escapeHtml(res.error || '无法读取目录')}</div>`;
+    return;
+  }
+  browserCurrent = res.path;
+  $('browserPath').textContent = res.path;
+  const list = $('browserList');
+  list.innerHTML = '';
+  if (!res.dirs.length){
+    list.innerHTML = '<div class="browser-empty">这个目录下没有子文件夹，可以直接选择当前目录。</div>';
+  } else {
+    for (const item of res.dirs){
+      const row = document.createElement('button');
+      row.className = 'browser-row';
+      row.innerHTML = `<span class="folder">▸</span><span>${escapeHtml(item.name)}</span>`;
+      row.addEventListener('click', () => loadDirs(item.path));
+      list.appendChild(row);
+    }
+  }
+  $('browserUp').disabled = !res.parent;
+  $('browserUp').dataset.parent = res.parent || '';
+}
+function closeBrowser(){ $('browserModal').classList.remove('show'); }
 async function openOutput(){
   const output = $('output').value.trim();
   if (!output){ showNotice('输出目录为空'); return; }
   const res = await api('/api/open', {output});
   if (!res.ok) showNotice(res.error || '无法打开目录');
 }
-$('pickSource').addEventListener('click', () => pick('source'));
-$('pickOutput').addEventListener('click', () => pick('output'));
+$('pickSource').addEventListener('click', () => openBrowser('source'));
+$('pickOutput').addEventListener('click', () => openBrowser('output'));
+$('browserClose').addEventListener('click', closeBrowser);
+$('browserCancel').addEventListener('click', closeBrowser);
+$('browserChoose').addEventListener('click', () => {
+  if (!browserCurrent) return;
+  $(browserKind === 'source' ? 'source' : 'output').value = browserCurrent;
+  closeBrowser();
+});
+$('browserUp').addEventListener('click', () => {
+  const parent = $('browserUp').dataset.parent;
+  if (parent) loadDirs(parent);
+});
+$('browserModal').addEventListener('click', (event) => {
+  if (event.target === $('browserModal')) closeBrowser();
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeBrowser();
+});
 $('scanBtn').addEventListener('click', scan);
 $('scanBtnMain').addEventListener('click', scan);
 $('startBtn').addEventListener('click', start);
