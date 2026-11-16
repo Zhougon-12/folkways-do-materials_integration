@@ -8,11 +8,13 @@ from __future__ import annotations
 
 import json
 import os
-import queue
+import subprocess
 import sys
+import tempfile
 import threading
 import time
 import traceback
+import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
@@ -26,6 +28,7 @@ if not CONVERTER_DIR.is_dir():
 DEFAULT_SOURCE = PROJECT / "blueprints-src"
 DEFAULT_OUTPUT = PROJECT / "blueprints-panel-out"
 INDEX = HERE / "index.html"
+PICKER = HERE / "pick_folder.ps1"
 
 sys.path.insert(0, str(CONVERTER_DIR))
 try:
@@ -220,6 +223,35 @@ def start_job(source_raw: str, output_raw: str, solid: str) -> tuple[bool, str]:
     return True, "已开始"
 
 
+def native_pick(title: str, initial: str) -> dict:
+    if not PICKER.exists():
+        return {"ok": False, "error": "缺少 pick_folder.ps1"}
+    out = Path(tempfile.gettempdir()) / f"folkways-pick-{uuid.uuid4().hex}.txt"
+    try:
+        command = [
+            "powershell", "-NoProfile", "-STA", "-ExecutionPolicy", "Bypass",
+            "-File", str(PICKER), "-Title", title, "-Initial", initial, "-OutFile", str(out),
+        ]
+        flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+        result = subprocess.run(command, capture_output=True, text=True, timeout=300, creationflags=flags)
+        if out.exists():
+            path = out.read_text(encoding="utf-8-sig").strip()
+            if path:
+                return {"ok": True, "path": path}
+            return {"ok": False, "canceled": True}
+        if result.returncode != 0:
+            error = (result.stderr or result.stdout or "系统文件选择器启动失败").strip()
+            return {"ok": False, "error": error[-400:]}
+        return {"ok": False, "canceled": True}
+    except Exception as error:  # noqa: BLE001
+        return {"ok": False, "error": str(error)}
+    finally:
+        try:
+            out.unlink(missing_ok=True)
+        except OSError:
+            pass
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "FolkwaysPanel/1.0"
 
@@ -281,6 +313,11 @@ class Handler(BaseHTTPRequestHandler):
                 str(body.get("solid", "minecraft:stone_bricks")),
             )
             self.send_json({"ok": ok, "message": message})
+            return
+        if path == "/api/pick":
+            kind = str(body.get("kind", "source"))
+            title = "选择蓝图目录" if kind == "source" else "选择输出目录"
+            self.send_json(native_pick(title, str(body.get("initial", ""))))
             return
         if path == "/api/dirs":
             self.send_json(directory_payload(str(body.get("path", ""))))
