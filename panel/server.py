@@ -113,11 +113,20 @@ def directory_payload(raw: str) -> dict:
     except OSError as error:
         return {"ok": False, "error": f"无法读取目录：{error}"}
     children.sort(key=lambda item: item["name"].casefold())
+    roots = []
+    for letter in "CDEFGHIJKLMNOPQRSTUVWXYZ":
+        root = Path(f"{letter}:\\")
+        try:
+            if root.is_dir():
+                roots.append({"name": f"{letter}:", "path": str(root)})
+        except OSError:
+            continue
     return {
         "ok": True,
         "path": str(path),
         "parent": str(path.parent) if path.parent != path else "",
         "dirs": children,
+        "roots": roots,
         "note": "" if path == requested else f"目录不存在，已打开上级：{requested}",
     }
 
