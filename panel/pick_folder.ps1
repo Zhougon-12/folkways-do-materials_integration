@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$Title = "选择蓝图目录",
     [string]$Initial = "",
     [Parameter(Mandatory = $true)][string]$OutFile
@@ -16,4 +16,7 @@ if ($Initial -and (Test-Path -LiteralPath $Initial -PathType Container)) {
 }
 
 $result = $dialog.ShowDialog()
+if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
+    [System.IO.File]::WriteAllText($OutFile, $dialog.SelectedPath, [System.Text.Encoding]::UTF8)
+}
 
