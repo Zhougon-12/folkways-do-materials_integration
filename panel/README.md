@@ -17,6 +17,7 @@ http://127.0.0.1:8765/
 ## 功能
 
 - 选择一个蓝图目录，或单个 `.blueprint`
+- 优先使用 Windows 系统文件夹选择器；失败时回退到内置网页目录浏览器
 - 递归扫描 `.blueprint`
 - 保留相对目录结构，输出 `.nbt`
 - 可选地面替换方块（`structurize:blocksolidsubstitution`）
