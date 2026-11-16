@@ -351,6 +351,18 @@ async function poll(){
 }
 let browserKind = 'source';
 let browserCurrent = '';
+async function nativePick(kind){
+  const field = $(kind === 'source' ? 'source' : 'output');
+  const res = await api('/api/pick', {kind, initial: field.value.trim()});
+  if (res.ok && res.path){
+    field.value = res.path;
+    showNotice('');
+    return;
+  }
+  if (res.canceled) return;
+  showNotice('系统文件选择器不可用，已打开网页目录浏览器：' + (res.error || 'unknown'));
+  openBrowser(kind);
+}
 async function openBrowser(kind){
   browserKind = kind;
   $('browserModal').classList.add('show');
@@ -400,8 +412,8 @@ async function openOutput(){
   const res = await api('/api/open', {output});
   if (!res.ok) showNotice(res.error || '无法打开目录');
 }
-$('pickSource').addEventListener('click', () => openBrowser('source'));
-$('pickOutput').addEventListener('click', () => openBrowser('output'));
+$('pickSource').addEventListener('click', () => nativePick('source'));
+$('pickOutput').addEventListener('click', () => nativePick('output'));
 $('browserClose').addEventListener('click', closeBrowser);
 $('browserCancel').addEventListener('click', closeBrowser);
 $('browserChoose').addEventListener('click', () => {
