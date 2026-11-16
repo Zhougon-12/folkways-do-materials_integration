@@ -151,7 +151,7 @@ python tools/legacy/convert2.py <input.blueprint> <output.nbt> [name] [--structu
 python tools/legacy/convert_pack.py <input-folder> <output-folder>
 ```
 
-Requirements: Python 3.10+; no third-party packages. The panel has a built-in web directory browser; paths can also be pasted manually.
+Requirements: Python 3.10+; no third-party packages. The panel uses the Windows folder picker; if it is unavailable, it falls back to a built-in web directory browser. Paths can also be pasted manually.
 
 ### Known issues
 
@@ -350,7 +350,7 @@ python tools/legacy/convert2.py <输入.blueprint> <输出.nbt> [名称] [--stru
 python tools/legacy/convert_pack.py <输入目录> <输出目录>
 ```
 
-依赖：Python 3.10+，无第三方包。面板内置网页目录浏览器；也可以直接粘贴路径。
+依赖：Python 3.10+，无第三方包。面板优先使用 Windows 系统文件夹选择器；不可用时回退到网页目录浏览器。也可以直接粘贴路径。
 
 ### 已知问题
 
