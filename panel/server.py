@@ -20,6 +20,9 @@ from urllib.parse import urlparse
 HERE = Path(__file__).resolve().parent
 PROJECT = HERE.parent
 CONVERTER_DIR = PROJECT / "folkways-ornamentum" / "tools"
+if not CONVERTER_DIR.is_dir():
+    # Portable tools release: panel/ and tools/ share one root.
+    CONVERTER_DIR = PROJECT / "tools"
 DEFAULT_SOURCE = PROJECT / "blueprints-src"
 DEFAULT_OUTPUT = PROJECT / "blueprints-panel-out"
 INDEX = HERE / "index.html"
