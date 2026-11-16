@@ -106,6 +106,52 @@ Open `http://127.0.0.1:8765/`. It scans `.blueprint` files, shows progress and l
 - Legacy converters: `tools/legacy/convert.py`, `tools/legacy/convert2.py`, `tools/legacy/convert_pack.py`
 - Converted Sword & Kingdom blueprints: [converted-blueprints-sword-kingdom.zip](https://github.com/Zhougon-12/folkways-do-materials_integration/releases/download/v1.0.0/converted-blueprints-sword-kingdom.zip) (7,368 `.nbt` files)
 
+### Usage
+
+#### Visual panel
+
+```powershell
+cd <repository>
+python panel/server.py
+```
+
+Open `http://127.0.0.1:8765/`.
+
+1. Set **Source** to a folder containing `.blueprint` files.
+2. Set **Output** to an empty or dedicated folder.
+3. Pick a **ground block** (default `minecraft:stone_bricks`).
+4. Click **Scan blueprints**.
+5. Click **Start conversion** and watch the progress/log.
+6. Use **Open output** to inspect the generated `.nbt` files and `conversion_manifest.json`.
+
+The panel is a local shell around `tools/convert_blueprints.py`; it does not need a Minecraft client or a server.
+
+#### Command line
+
+New directory converter:
+
+```powershell
+python tools/convert_blueprints.py --src <blueprint-folder> --out <output-folder> --solid minecraft:stone_bricks
+# optional: --deploy <instance-folder> copies into folkways/blueprint
+# optional: --limit 20 --verbose
+```
+
+Sword & Kingdom pack converter (paths are defined at the top of the script):
+
+```powershell
+python tools/convert_sword_blueprints.py
+```
+
+Legacy converters:
+
+```powershell
+python tools/legacy/convert.py <input.blueprint> <output.nbt> [name]
+python tools/legacy/convert2.py <input.blueprint> <output.nbt> [name] [--structure]
+python tools/legacy/convert_pack.py <input-folder> <output-folder>
+```
+
+Requirements: Python 3.10+; no third-party packages. The panel's folder picker uses `tkinter` when available; paths can also be pasted manually.
+
 ### Known issues
 
 
@@ -257,6 +303,52 @@ python panel/server.py
 - 新版转换器：`tools/convert_blueprints.py`
 - 旧版转换器：`tools/legacy/convert.py`、`tools/legacy/convert2.py`、`tools/legacy/convert_pack.py`
 - 已转换的剑与王国蓝图：[converted-blueprints-sword-kingdom.zip](https://github.com/Zhougon-12/folkways-do-materials_integration/releases/download/v1.0.0/converted-blueprints-sword-kingdom.zip)（7,368 个 `.nbt`）
+
+### 使用方法
+
+#### 可视化面板
+
+```powershell
+cd <仓库目录>
+python panel/server.py
+```
+
+打开 `http://127.0.0.1:8765/`。
+
+1. **源蓝图目录**：选择包含 `.blueprint` 的文件夹。
+2. **输出目录**：选择空目录或专用输出目录。
+3. **地面方块**：默认 `minecraft:stone_bricks`。
+4. 点击 **扫描蓝图**。
+5. 点击 **开始转换**，查看实时日志和进度。
+6. 点击 **打开输出目录**，检查生成的 `.nbt` 和 `conversion_manifest.json`。
+
+面板只是本地外壳，实际转换由 `tools/convert_blueprints.py` 完成，不需要启动 Minecraft 客户端或服务端。
+
+#### 命令行
+
+新版目录转换：
+
+```powershell
+python tools/convert_blueprints.py --src <蓝图目录> --out <输出目录> --solid minecraft:stone_bricks
+# 可选：--deploy <实例目录> 直接复制到 folkways/blueprint
+# 可选：--limit 20 --verbose
+```
+
+剑与王国整包转换（路径写在脚本顶部）：
+
+```powershell
+python tools/convert_sword_blueprints.py
+```
+
+旧版工具：
+
+```powershell
+python tools/legacy/convert.py <输入.blueprint> <输出.nbt> [名称]
+python tools/legacy/convert2.py <输入.blueprint> <输出.nbt> [名称] [--structure]
+python tools/legacy/convert_pack.py <输入目录> <输出目录>
+```
+
+依赖：Python 3.10+，无第三方包。面板的目录选择器在支持时使用 `tkinter`；也可以直接粘贴路径。
 
 ### 已知问题
 
