@@ -104,6 +104,7 @@ Open `http://127.0.0.1:8765/`. It scans `.blueprint` files, shows progress and l
 
 - New converter: `tools/convert_blueprints.py`
 - Legacy converters: `tools/legacy/convert.py`, `tools/legacy/convert2.py`, `tools/legacy/convert_pack.py`
+- Portable converter bundle: [folkways-blueprint-converter-tools.zip](https://github.com/Zhougon-12/folkways-do-materials_integration/releases/download/v1.0.0/folkways-blueprint-converter-tools.zip) (`panel/` + new/legacy tools)
 - Converted Sword & Kingdom blueprints: [converted-blueprints-sword-kingdom.zip](https://github.com/Zhougon-12/folkways-do-materials_integration/releases/download/v1.0.0/converted-blueprints-sword-kingdom.zip) (7,368 `.nbt` files)
 
 ### Usage
@@ -302,6 +303,7 @@ python panel/server.py
 
 - 新版转换器：`tools/convert_blueprints.py`
 - 旧版转换器：`tools/legacy/convert.py`、`tools/legacy/convert2.py`、`tools/legacy/convert_pack.py`
+- 便携转换工具包：[folkways-blueprint-converter-tools.zip](https://github.com/Zhougon-12/folkways-do-materials_integration/releases/download/v1.0.0/folkways-blueprint-converter-tools.zip)（含 `panel/` 与新旧转换器）
 - 已转换的剑与王国蓝图：[converted-blueprints-sword-kingdom.zip](https://github.com/Zhougon-12/folkways-do-materials_integration/releases/download/v1.0.0/converted-blueprints-sword-kingdom.zip)（7,368 个 `.nbt`）
 
 ### 使用方法
