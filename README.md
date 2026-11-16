@@ -90,6 +90,22 @@ A 48-second promo is attached to the v1.0.0 release: [folkways-domum-promo-48s.m
 
 It covers blueprint preview/order, building transplant and normal Do block placement.
 
+### Blueprint conversion panel
+
+A local visual panel wraps the new converter:
+
+```powershell
+python panel/server.py
+```
+
+Open `http://127.0.0.1:8765/`. It scans `.blueprint` files, shows progress and logs, writes `.nbt` with `conversion_manifest.json`, and supports the ground-block override.
+
+![Blueprint conversion panel](panel/panel-preview.png)
+
+- New converter: `tools/convert_blueprints.py`
+- Legacy converters: `tools/legacy/convert.py`, `tools/legacy/convert2.py`, `tools/legacy/convert_pack.py`
+- Converted Sword & Kingdom blueprints: [converted-blueprints-sword-kingdom.zip](https://github.com/Zhougon-12/folkways-do-materials_integration/releases/download/v1.0.0/converted-blueprints-sword-kingdom.zip) (7,368 `.nbt` files)
+
 ### Known issues
 
 
@@ -226,6 +242,22 @@ v1.0.0 Release 附带 48 秒宣传片：[folkways-domum-promo-48s.mp4](https://g
 
 内容包含蓝图放置预览与下单、建筑移植、以及正常放置 Do 方块。
 
+### 蓝图转换可视化面板
+
+本地面板包装新版转换器：
+
+```powershell
+python panel/server.py
+```
+
+打开 `http://127.0.0.1:8765/`。支持扫描 `.blueprint`、实时日志、进度、地面方块替换，并自动写出 `.nbt` 和 `conversion_manifest.json`。
+
+![蓝图转换面板](panel/panel-preview.png)
+
+- 新版转换器：`tools/convert_blueprints.py`
+- 旧版转换器：`tools/legacy/convert.py`、`tools/legacy/convert2.py`、`tools/legacy/convert_pack.py`
+- 已转换的剑与王国蓝图：[converted-blueprints-sword-kingdom.zip](https://github.com/Zhougon-12/folkways-do-materials_integration/releases/download/v1.0.0/converted-blueprints-sword-kingdom.zip)（7,368 个 `.nbt`）
+
 ### 已知问题
 
 
@@ -303,6 +335,8 @@ docs/                showcase, Sword & Kingdom notes, name map, manifest
 docs/index.html      Chinese showcase (GitHub Pages)
 
 docs/index.en.html   English showcase (GitHub Pages)
+panel/               local visual conversion panel
+tools/legacy/        old single-file / pack converters
 
 evidence/            original in-game screenshots
 
