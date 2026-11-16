@@ -92,8 +92,16 @@ def directory_payload(raw: str) -> dict:
         path = path.absolute()
     if path.is_file():
         path = path.parent
+    requested = path
     if not path.is_dir():
-        return {"ok": False, "error": f"目录不存在：{path}"}
+        # The portable bundle has no default blueprints-src. Open the nearest
+        # existing parent instead of trapping the browser on an error screen.
+        for candidate in path.parents:
+            if candidate.is_dir():
+                path = candidate
+                break
+        else:
+            return {"ok": False, "error": f"目录不存在：{requested}"}
     children = []
     try:
         for entry in path.iterdir():
@@ -110,6 +118,7 @@ def directory_payload(raw: str) -> dict:
         "path": str(path),
         "parent": str(path.parent) if path.parent != path else "",
         "dirs": children,
+        "note": "" if path == requested else f"目录不存在，已打开上级：{requested}",
     }
 
 
@@ -236,7 +245,7 @@ class Handler(BaseHTTPRequestHandler):
             return
         if path == "/api/config":
             self.send_json({
-                "source": str(DEFAULT_SOURCE),
+                "source": str(DEFAULT_SOURCE if DEFAULT_SOURCE.exists() else PROJECT),
                 "output": str(DEFAULT_OUTPUT),
                 "solid": "minecraft:stone_bricks",
                 "converter_ready": converter is not None,
